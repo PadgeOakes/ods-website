@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Treo Intake — Build a User Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+<style>
+:root{--ocean:#0B4F6C;--sand:#F5F2EC;--white:#FFFFFF;--ink:#16202A;--slate:#4A5D6B;--mist:#E4EEF3;--coral:#D95F3B;--gold:#C89A3C;--seafoam:#1A8A76}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--sand);min-height:100vh;padding:24px}
+.wrap{max-width:760px;margin:0 auto}
+h1{font-family:'DM Serif Display',serif;font-size:1.8rem;color:var(--ink);margin-bottom:4px}
+.subtitle{font-size:.9rem;color:var(--slate);margin-bottom:24px}
+.card{background:var(--white);border-radius:16px;box-shadow:0 6px 20px rgba(11,79,108,.1);padding:22px;margin-bottom:20px}
+h2{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--ink);margin-bottom:4px}
+.section-note{font-size:.78rem;color:var(--slate);margin-bottom:14px}
+.field{margin-bottom:12px}
+.field label{font-size:.74rem;color:var(--slate);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:5px}
+.field input,.field textarea,.field select{width:100%;padding:9px 12px;border:1.5px solid var(--mist);border-radius:8px;font-size:.9rem;font-family:inherit}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}
+button{background:var(--ocean);color:white;border:none;border-radius:10px;padding:11px 18px;font-size:.88rem;font-weight:600;cursor:pointer}
+button.add{background:var(--seafoam);margin-bottom:14px}
+button.remove{background:var(--coral);padding:6px 10px;font-size:.78rem}
+button.export{background:var(--gold);font-size:1rem;padding:16px;width:100%;margin-top:10px}
+.entry{background:var(--sand);border-radius:10px;padding:14px;margin-bottom:10px;position:relative}
+.entry .remove{position:absolute;top:10px;right:10px}
+.dest-row{display:grid;grid-template-columns:2fr 1fr auto;gap:8px;margin-bottom:6px;align-items:center}
+.dest-row select,.dest-row input{padding:7px 10px;font-size:.85rem}
+#output{width:100%;min-height:160px;font-family:monospace;font-size:.78rem;margin-top:14px}
+.status{font-size:.8rem;color:var(--slate);margin-top:8px;min-height:18px}
+.status.error{color:var(--coral)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Treo Intake</h1>
+  <div class="subtitle">Build a full user profile here, then export it to load directly into Treo — no re-typing.</div>
+
+  <div class="card">
+    <h2>User</h2>
+    <div class="field">
+      <label>Name</label>
+      <input type="text" id="userName" placeholder="e.g. Patient Jennifer" />
+    </div>
+    <div class="field">
+      <label>Home base address</label>
+      <input type="text" id="userHome" placeholder="Home address" />
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Places (Zones)</h2>
+    <div class="section-note">Each zone can have several specific destinations, each with a usual time-of-day pattern.</div>
+    <div id="zoneEntries"></div>
+    <button class="add" onclick="addZoneEntry()">+ Add a Place</button>
+  </div>
+
+  <div class="card">
+    <h2>Contacts</h2>
+    <div id="contactEntries"></div>
+    <button class="add" onclick="addContactEntry()">+ Add a Contact</button>
+  </div>
+
+  <div class="card">
+    <h2>Schedule</h2>
+    <div id="eventEntries"></div>
+    <button class="add" onclick="addEventEntry()">+ Add an Event</button>
+  </div>
+
+  <div class="card">
+    <h2>Export</h2>
+    <div class="section-note">Geocodes every address (using the same free lookup Treo uses), then produces a single file to import directly into Treo.</div>
+    <button class="export" onclick="exportProfile()">Geocode &amp; Export Profile</button>
+    <div class="status" id="exportStatus"></div>
+    <textarea id="output" readonly placeholder="Exported profile JSON will appear here..."></textarea>
+  </div>
+</div>
+
+<script>
+let zoneCount = 0, contactCount = 0, eventCount = 0;
+
+function addZoneEntry(){
+  const id = zoneCount++;
+  const div = document.createElement('div');
+  div.className = 'entry';
+  div.id = 'zone-' + id;
+  div.innerHTML = `
+    <button class="remove" onclick="document.getElementById('zone-${id}').remove()">Remove</button>
+    <div class="field"><label>Place name</label><input type="text" class="z-name" placeholder="e.g. Corner Plaza" /></div>
+    <div class="row">
+      <div class="field"><label>Address</label><input type="text" class="z-address" placeholder="Real street address" /></div>
+      <div class="field"><label>Radius (miles)</label><input type="text" class="z-radius" value="0.15" /></div>
+    </div>
+    <div class="field"><label>General note (optional)</label><input type="text" class="z-tag" placeholder="e.g. shopping plaza" /></div>
+    <div class="field">
+      <label>Specific destinations here</label>
+      <div class="dest-list" id="destlist-${id}"></div>
+      <button class="add" style="margin-top:4px" onclick="addDestRow(${id})">+ Add a destination</button>
+    </div>
+  `;
+  document.getElementById('zoneEntries').appendChild(div);
+  addDestRow(id);
+}
+
+function addDestRow(zoneId){
+  const list = document.getElementById('destlist-' + zoneId);
+  const row = document.createElement('div');
+  row.className = 'dest-row';
+  row.innerHTML = `
+    <input type="text" class="d-name" placeholder="e.g. 7-Eleven" />
+    <select class="d-pattern">
+      <option value="anytime">anytime</option>
+      <option value="morning">morning</option>
+      <option value="afternoon">afternoon</option>
+      <option value="evening">evening</option>
+      <option value="night">night</option>
+    </select>
+    <button class="remove" onclick="this.parentElement.remove()">×</button>
+  `;
+  list.appendChild(row);
+}
+
+function addContactEntry(){
+  const id = contactCount++;
+  const div = document.createElement('div');
+  div.className = 'entry';
+  div.id = 'contact-' + id;
+  div.innerHTML = `
+    <button class="remove" onclick="document.getElementById('contact-${id}').remove()">Remove</button>
+    <div class="row">
+      <div class="field"><label>Name</label><input type="text" class="c-name" placeholder="e.g. Sarah" /></div>
+      <div class="field"><label>Routine visit?</label>
+        <select class="c-routine"><option value="yes">Yes</option><option value="no">No</option></select>
+      </div>
+    </div>
+    <div class="field"><label>Address</label><input type="text" class="c-address" placeholder="Address" /></div>
+  `;
+  document.getElementById('contactEntries').appendChild(div);
+}
+
+function addEventEntry(){
+  const id = eventCount++;
+  const div = document.createElement('div');
+  div.className = 'entry';
+  div.id = 'event-' + id;
+  div.innerHTML = `
+    <button class="remove" onclick="document.getElementById('event-${id}').remove()">Remove</button>
+    <div class="field"><label>Title</label><input type="text" class="e-title" placeholder="e.g. Dr. Alvarez checkup" /></div>
+    <div class="row3">
+      <div class="field"><label>Date</label><input type="date" class="e-date" /></div>
+      <div class="field"><label>Time</label><input type="time" class="e-time" /></div>
+      <div class="field"><label>Duration (min)</label><input type="text" class="e-duration" value="60" /></div>
+    </div>
+    <div class="field"><label>Address</label><input type="text" class="e-address" placeholder="Address" /></div>
+  `;
+  document.getElementById('eventEntries').appendChild(div);
+}
+
+async function geocode(address){
+  if (!address) return { lat: null, lon: null };
+  try {
+    const res = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(address));
+    const data = await res.json();
+    if (!data.length) return { lat: null, lon: null };
+    return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
+  } catch (e) {
+    return { lat: null, lon: null };
+  }
+}
+
+async function exportProfile(){
+  const status = document.getElementById('exportStatus');
+  const output = document.getElementById('output');
+  status.textContent = 'Geocoding addresses...';
+  status.className = 'status';
+
+  const profile = { userName: document.getElementById('userName').value.trim(), treoZones: [], treoEvents: [], treoContacts: [] };
+
+  // Zones
+  const zoneEls = document.querySelectorAll('#zoneEntries .entry');
+  for (const el of zoneEls) {
+    const name = el.querySelector('.z-name').value.trim();
+    if (!name) continue;
+    const address = el.querySelector('.z-address').value.trim();
+    const radius = parseFloat(el.querySelector('.z-radius').value) || 0.15;
+    const tag = el.querySelector('.z-tag').value.trim();
+    status.textContent = 'Geocoding: ' + name + '...';
+    const geo = await geocode(address);
+    await new Promise(r => setTimeout(r, 1100));
+    const destinations = [];
+    el.querySelectorAll('.dest-row').forEach(row => {
+      const dName = row.querySelector('.d-name').value.trim();
+      if (dName) destinations.push({ name: dName, pattern: row.querySelector('.d-pattern').value });
+    });
+    profile.treoZones.push({ name, lat: geo.lat, lon: geo.lon, radius, tag, destinations });
+  }
+
+  // Contacts
+  const contactEls = document.querySelectorAll('#contactEntries .entry');
+  for (const el of contactEls) {
+    const name = el.querySelector('.c-name').value.trim();
+    if (!name) continue;
+    const address = el.querySelector('.c-address').value.trim();
+    const routine = el.querySelector('.c-routine').value === 'yes';
+    status.textContent = 'Geocoding: ' + name + '...';
+    const geo = await geocode(address);
+    await new Promise(r => setTimeout(r, 1100));
+    profile.treoContacts.push({ name, address, lat: geo.lat, lon: geo.lon, routine });
+  }
+
+  // Events
+  const eventEls = document.querySelectorAll('#eventEntries .entry');
+  for (const el of eventEls) {
+    const title = el.querySelector('.e-title').value.trim();
+    if (!title) continue;
+    const date = el.querySelector('.e-date').value;
+    const time = el.querySelector('.e-time').value;
+    const duration = parseInt(el.querySelector('.e-duration').value, 10) || 60;
+    const address = el.querySelector('.e-address').value.trim();
+    status.textContent = 'Geocoding: ' + title + '...';
+    const geo = await geocode(address);
+    await new Promise(r => setTimeout(r, 1100));
+    profile.treoEvents.push({ date, time, duration, title, address, lat: geo.lat, lon: geo.lon });
+  }
+
+  output.value = JSON.stringify(profile, null, 2);
+  status.textContent = 'Done. Copy the text below, or use the download button that just appeared.';
+  status.className = 'status';
+
+  // Offer a direct file download too
+  const blob = new Blob([output.value], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  let dlBtn = document.getElementById('dlBtn');
+  if (!dlBtn) {
+    dlBtn = document.createElement('a');
+    dlBtn.id = 'dlBtn';
+    dlBtn.style.display = 'block';
+    dlBtn.style.marginTop = '10px';
+    document.getElementById('output').after(dlBtn);
+  }
+  dlBtn.href = url;
+  dlBtn.download = (profile.userName || 'treo-profile').replace(/\s+/g, '_') + '.json';
+  dlBtn.textContent = 'Download ' + dlBtn.download;
+}
+</script>
+</body>
+</html>
