@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Oakes Development Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --ocean:#0B4F6C;
+  --sand:#F5F2EC;
+  --white:#FFFFFF;
+  --ink:#16202A;
+  --slate:#4A5D6B;
+  --mist:#E4EEF3;
+  --gold:#C89A3C;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--sand);
+  color:var(--ink);
+  line-height:1.6;
+}
+
+/* Signature element: a simple orientation mark, four ticks around a center point -
+   quiet nod to "finding your way," without naming the specific product. */
+.mark{width:34px;height:34px;flex-shrink:0}
+
+header{
+  padding:28px 24px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  max-width:920px;
+  margin:0 auto;
+}
+header .name{font-family:'DM Serif Display',serif;font-size:1.15rem;letter-spacing:.01em}
+
+.hero{
+  max-width:760px;
+  margin:0 auto;
+  padding:64px 24px 48px;
+}
+.hero h1{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2.2rem, 5vw, 3.4rem);
+  line-height:1.15;
+  color:var(--ink);
+  max-width:12ch;
+}
+.hero .lede{
+  margin-top:22px;
+  font-size:1.15rem;
+  color:var(--slate);
+  max-width:46ch;
+}
+
+.divider{
+  max-width:760px;
+  margin:0 auto;
+  padding:0 24px;
+}
+.divider hr{border:none;border-top:1px solid var(--mist)}
+
+section.block{
+  max-width:760px;
+  margin:0 auto;
+  padding:48px 24px;
+}
+section.block h2{
+  font-family:'DM Serif Display',serif;
+  font-size:1.5rem;
+  margin-bottom:14px;
+}
+section.block p{
+  color:var(--slate);
+  font-size:1.02rem;
+  max-width:52ch;
+}
+section.block p + p{margin-top:14px}
+
+.principle{
+  display:flex;
+  gap:16px;
+  padding:20px 0;
+  border-top:1px solid var(--mist);
+}
+.principle:last-child{border-bottom:1px solid var(--mist)}
+.principle .eyebrow{
+  font-family:'DM Serif Display',serif;
+  font-style:italic;
+  color:var(--gold);
+  font-size:1.1rem;
+  flex-shrink:0;
+  width:110px;
+}
+.principle p{color:var(--slate);font-size:.98rem}
+
+footer{
+  max-width:760px;
+  margin:0 auto;
+  padding:56px 24px 64px;
+}
+footer .tagline{
+  font-family:'DM Serif Display',serif;
+  font-style:italic;
+  color:var(--ocean);
+  font-size:1.05rem;
+  margin-bottom:24px;
+}
+footer .contact{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:var(--ink);
+  text-decoration:none;
+  font-weight:600;
+  border-bottom:2px solid var(--gold);
+  padding-bottom:2px;
+}
+footer .contact:hover{color:var(--ocean)}
+footer .fine{margin-top:32px;color:var(--slate);font-size:.85rem}
+
+@media (max-width: 600px){
+  .principle{flex-direction:column;gap:6px}
+  .principle .eyebrow{width:auto}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <svg class="mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="17" cy="17" r="3" fill="#0B4F6C"/>
+    <line x1="17" y1="2" x2="17" y2="9" stroke="#C89A3C" stroke-width="2" stroke-linecap="round"/>
+    <line x1="17" y1="25" x2="17" y2="32" stroke="#0B4F6C" stroke-width="2" stroke-linecap="round" stroke-opacity="0.35"/>
+    <line x1="2" y1="17" x2="9" y2="17" stroke="#0B4F6C" stroke-width="2" stroke-linecap="round" stroke-opacity="0.35"/>
+    <line x1="25" y1="17" x2="32" y2="17" stroke="#0B4F6C" stroke-width="2" stroke-linecap="round" stroke-opacity="0.35"/>
+  </svg>
+  <span class="name">Oakes Development Studio</span>
+</header>
+
+<div class="hero">
+  <h1>Tools built to be used, not admired.</h1>
+  <p class="lede">Oakes Development Studio is an independent studio building practical, working software — the kind a person can actually pick up and rely on, not a demo of what might one day exist.</p>
+</div>
+
+<div class="divider"><hr></div>
+
+<section class="block">
+  <h2>What we're building</h2>
+  <p>Our current focus is a memory-aid and escalating-response system — software that helps someone know where they are, what's happening around them, and what to do next, without needing a live internet connection at the moment it matters most.</p>
+  <p>It's designed first for people managing real cognitive challenges day to day, and built with the understanding that every wasted step, every unnecessary re-entry of data, costs something real for the people who need it most.</p>
+</section>
+
+<div class="divider"><hr></div>
+
+<section class="block">
+  <h2>How we work</h2>
+  <div class="principle">
+    <div class="eyebrow">Honest data</div>
+    <p>Real information, verified rather than assumed. If we don't know something, we say so — and go check, rather than guess with confidence.</p>
+  </div>
+  <div class="principle">
+    <div class="eyebrow">Honest code</div>
+    <p>Software that does what it says, nothing hidden, nothing overstated. No central servers holding a person's private data — everything lives on their own device.</p>
+  </div>
+  <div class="principle">
+    <div class="eyebrow">Built by need</div>
+    <p>Every feature exists because someone actually needed it, tested it, and pushed back until it was right — not because it looked good in a pitch.</p>
+  </div>
+</section>
+
+<footer>
+  <p class="tagline">Designed by you. Crafted for you. Grows with you.</p>
+  <a class="contact" href="mailto:oakesdevstudio@gmail.com">oakesdevstudio@gmail.com</a>
+  <p class="fine">Oakes Development Studio LLC — Santa Cruz, California</p>
+</footer>
+
+</body>
+</html>
