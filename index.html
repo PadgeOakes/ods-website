@@ -32,17 +32,22 @@ body{
 header{
   padding:28px 24px;
   display:flex;
+  flex-direction:column;
   align-items:center;
-  gap:12px;
+  gap:6px;
   max-width:920px;
   margin:0 auto;
+  text-align:center;
 }
-header .name{font-family:'DM Serif Display',serif;font-size:1.15rem;letter-spacing:.01em}
+header .name{font-family:'DM Serif Display',serif;font-size:1.3rem;font-weight:700;letter-spacing:.01em}
+header .header-tagline{font-family:'DM Serif Display',serif;font-style:italic;color:var(--ocean);font-size:.85rem;margin-top:2px}
+header .name-block{display:flex;flex-direction:column;align-items:center}
 
 .hero{
   max-width:760px;
   margin:0 auto;
   padding:64px 24px 48px;
+  text-align:center;
 }
 .hero h1{
   font-family:'DM Serif Display',serif;
@@ -50,12 +55,15 @@ header .name{font-family:'DM Serif Display',serif;font-size:1.15rem;letter-spaci
   line-height:1.15;
   color:var(--ink);
   max-width:12ch;
+  margin:0 auto;
 }
 .hero .lede{
   margin-top:22px;
   font-size:1.15rem;
   color:var(--slate);
   max-width:46ch;
+  margin-left:auto;
+  margin-right:auto;
 }
 
 .divider{
@@ -124,6 +132,18 @@ footer .contact{
 footer .contact:hover{color:var(--ocean)}
 footer .fine{margin-top:32px;color:var(--slate);font-size:.85rem}
 
+.cta-btn{
+  display:inline-block;
+  background:var(--ocean);
+  color:var(--white);
+  text-decoration:none;
+  font-weight:600;
+  padding:13px 26px;
+  border-radius:8px;
+  font-size:1rem;
+}
+.cta-btn:hover{background:var(--gold)}
+
 @media (max-width: 600px){
   .principle{flex-direction:column;gap:6px}
   .principle .eyebrow{width:auto}
@@ -140,20 +160,24 @@ footer .fine{margin-top:32px;color:var(--slate);font-size:.85rem}
     <line x1="2" y1="17" x2="9" y2="17" stroke="#0B4F6C" stroke-width="2" stroke-linecap="round" stroke-opacity="0.35"/>
     <line x1="25" y1="17" x2="32" y2="17" stroke="#0B4F6C" stroke-width="2" stroke-linecap="round" stroke-opacity="0.35"/>
   </svg>
-  <span class="name">Oakes Development Studio</span>
+  <div class="name-block">
+    <span class="name">Oakes Development Studio</span>
+    <span class="header-tagline">Designed by you. Crafted for you. Grows with you.</span>
+  </div>
 </header>
 
 <div class="hero">
   <h1>Tools built to be used, not admired.</h1>
-  <p class="lede">Oakes Development Studio is an independent studio building practical, working software — the kind a person can actually pick up and rely on, not a demo of what might one day exist.</p>
+  <p class="lede">Oakes Development Studio is an independent studio building practical, working software.</p>
 </div>
 
 <div class="divider"><hr></div>
 
 <section class="block">
   <h2>What we're building</h2>
-  <p>Our current focus is a memory-aid and escalating-response system — software that helps someone know where they are, what's happening around them, and what to do next, without needing a live internet connection at the moment it matters most.</p>
-  <p>It's designed first for people managing real cognitive challenges day to day, and built with the understanding that every wasted step, every unnecessary re-entry of data, costs something real for the people who need it most.</p>
+  <p>Our current focus is a memory-aid and escalating-response system — software that helps someone know where they are, what's happening around them, and what to do next, without needing a live internet connection.</p>
+  <p>It's designed first for people managing real cognitive challenges day to day, and built by people who understand the need for up-to-date, accurate information at the moment it matters most.</p>
+  <p>That understanding is first-hand, not theoretical.</p>
 </section>
 
 <div class="divider"><hr></div>
@@ -162,20 +186,23 @@ footer .fine{margin-top:32px;color:var(--slate);font-size:.85rem}
   <h2>How we work</h2>
   <div class="principle">
     <div class="eyebrow">Honest data</div>
-    <p>Real information, verified rather than assumed. If we don't know something, we say so — and go check, rather than guess with confidence.</p>
+    <p>Real information, verified by you.</p>
   </div>
   <div class="principle">
     <div class="eyebrow">Honest code</div>
-    <p>Software that does what it says, nothing hidden, nothing overstated. No central servers holding a person's private data — everything lives on their own device.</p>
+    <p>Software that does what it says. No central servers holding a person's private data — everything lives on their own device.</p>
   </div>
   <div class="principle">
     <div class="eyebrow">Built by need</div>
-    <p>Every feature exists because someone actually needed it, tested it, and pushed back until it was right — not because it looked good in a pitch.</p>
+    <p>Every feature exists because someone actually needed it, tested it, and pushed back until it was right.</p>
   </div>
 </section>
 
+<section class="block">
+  <a class="cta-btn" href="https://forms.gle/uDYZrUdomLGuXnrF9" target="_blank" rel="noopener">Request More Information</a>
+</section>
+
 <footer>
-  <p class="tagline">Designed by you. Crafted for you. Grows with you.</p>
   <a class="contact" href="mailto:oakesdevstudio@gmail.com">oakesdevstudio@gmail.com</a>
   <p class="fine">Oakes Development Studio LLC — Santa Cruz, California</p>
 </footer>
