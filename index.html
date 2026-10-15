@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Oakes Development Studio</title>
+<meta name="description" content="Oakes Development Studio is an independent studio in Santa Cruz, California, building simple tools for people with brain injuries and the people who support them. Home of Treo." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet" />
 <style>
@@ -137,6 +138,55 @@ footer .fine{margin-top:32px;color:var(--slate);font-size:.85rem}
   font-size:1rem;
 }
 .cta-btn:hover{background:var(--gold)}
+.cta-row{margin-top:24px}
+
+a:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+/* Quick links under the header */
+.site-nav{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:2px 22px;
+  margin-top:10px;
+}
+.site-nav a{
+  color:var(--ocean);
+  text-decoration:none;
+  font-weight:600;
+  font-size:.95rem;
+  padding:10px 2px;
+  border-bottom:2px solid transparent;
+}
+.site-nav a:hover{border-bottom-color:var(--gold)}
+
+/* Sub-headings, used in About */
+section.block h3{
+  font-family:'DM Serif Display',serif;
+  font-style:italic;
+  font-weight:400;
+  color:var(--ocean);
+  font-size:1.2rem;
+  margin:30px 0 8px;
+}
+section.block h2 + h3{margin-top:6px}
+
+/* Links and lists inside text blocks */
+section.block p a, section.block li a{
+  color:var(--ocean);
+  font-weight:600;
+  text-decoration:none;
+  border-bottom:2px solid var(--gold);
+}
+section.block p a:hover, section.block li a:hover{color:var(--ink)}
+section.block ul.plain{
+  list-style:none;
+  color:var(--slate);
+  font-size:.98rem;
+  max-width:52ch;
+}
+section.block ul.plain li + li{margin-top:8px}
+section.block .small{font-size:.88rem}
 
 @media (max-width: 600px){
   .principle{flex-direction:column;gap:6px}
@@ -158,7 +208,14 @@ footer .fine{margin-top:32px;color:var(--slate);font-size:.85rem}
     <span class="name">Oakes Development Studio</span>
     <span class="header-tagline">Designed by you. Crafted for you. Grows with you.</span>
   </div>
+  <nav class="site-nav" aria-label="Sections">
+    <a href="#treo">Treo</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
 </header>
+
+<main>
 
 <div class="hero">
   <p class="lede">Oakes Development Studio is an independent studio building practical, working software.</p>
@@ -166,7 +223,7 @@ footer .fine{margin-top:32px;color:var(--slate);font-size:.85rem}
 
 <div class="divider"><hr></div>
 
-<section class="block">
+<section class="block" id="building">
   <h2>What we're building</h2>
   <p>Our current focus is a memory-aid and escalating-response system — software that helps someone know where they are, what's happening around them, and what to do next, without needing a live internet connection.</p>
   <p>It's designed first for people managing real cognitive challenges day to day, and built by people who understand the need for up-to-date, accurate information at the moment it matters most.</p>
@@ -175,7 +232,19 @@ footer .fine{margin-top:32px;color:var(--slate);font-size:.85rem}
 
 <div class="divider"><hr></div>
 
-<section class="block">
+<section class="block" id="treo">
+  <h2>Our first tool: Treo</h2>
+  <p>Treo is a simple orientation aid that runs on a phone. When things feel confusing, one big button shows where you are, what is around you, and what is most likely next, using your own saved places, calendar and the time of day.</p>
+  <p>Treo offers a gentle guess, such as &ldquo;Are you going to the pharmacy?&rdquo; A Yes or No lets you confirm or correct it. If the first guess is wrong, it moves on to the next most likely one.</p>
+  <p>Your saved places, contacts and events stay on your own phone, not on our servers, and there is no account to create. Treo is an early test version and is not a safety or medical device, so please don't rely on it for anything urgent.</p>
+  <div class="cta-row">
+    <a class="cta-btn" href="https://padgeoakes.github.io/treo-app/">Open the Treo beta</a>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<section class="block" id="how">
   <h2>How we work</h2>
   <div class="principle">
     <div class="eyebrow">Honest data</div>
@@ -191,12 +260,55 @@ footer .fine{margin-top:32px;color:var(--slate);font-size:.85rem}
   </div>
 </section>
 
-<section class="block">
-  <a class="cta-btn" href="https://forms.gle/uDYZrUdomLGuXnrF9" target="_blank" rel="noopener">Request More Information</a>
+<div class="divider"><hr></div>
+
+<section class="block" id="about">
+  <h2>About</h2>
+
+  <h3>About us</h3>
+  <p>Oakes Development Studio LLC is a small, independent studio in Santa Cruz, California. It was formed in July 2026 to build simple tools for people with brain injuries and for the people who support them.</p>
+  <p>We have learned that the tools that last are the simple ones, built around one person's real day. We build slowly, and we test with the people who will use them.</p>
+  <p>We want to shape what comes next with people who live with this every day, and with the programs that know them best.</p>
+
+  <h3>About me</h3>
+  <p>I'm Patrick Oakes Halpin, the founder. I live with acquired brain injuries affecting the frontal cortex, and I have been in active rehabilitation for more than twenty years.</p>
+  <p>My rehab has been practical and slow. It started with post-it notes on the kitchen cabinets and the bathroom mirror: turn off the oven, brush your teeth, take your medication. Later I moved to a computer and speech-to-text, and now to my phone. Rugby, including years of coaching at UC Santa Cruz, gave me structure and community.</p>
+  <p>I built the first version of Treo for myself. Everything we build starts from the same question: what actually helps on an ordinary day?</p>
 </section>
 
+<div class="divider"><hr></div>
+
+<section class="block" id="contact">
+  <h2>Contact</h2>
+  <p>We'd like to hear from you: testers, caregivers, clinicians, support programs, and anyone who knows this world better than we do.</p>
+
+  <div class="principle" style="margin-top:22px">
+    <div class="eyebrow">Email</div>
+    <p><a href="mailto:oakesdevstudio@gmail.com">oakesdevstudio@gmail.com</a></p>
+  </div>
+  <div class="principle">
+    <div class="eyebrow">Based in</div>
+    <p>Santa Cruz, California</p>
+  </div>
+  <!-- Add the company phone number and mailing address here once they are chosen (timeline: Oct 27). -->
+  <div class="principle">
+    <div class="eyebrow">Write to us</div>
+    <ul class="plain">
+      <li>Tried Treo? Tell us what worked and what didn't.</li>
+      <li>Know people or programs that support people with brain injuries? We'd welcome an introduction.</li>
+      <li>Questions about the studio or how we work.</li>
+    </ul>
+  </div>
+
+  <div class="cta-row">
+    <a class="cta-btn" href="https://forms.gle/uDYZrUdomLGuXnrF9" target="_blank" rel="noopener">Request More Information</a>
+  </div>
+  <p class="small" style="margin-top:12px">The form is a Google Form. If you would rather not use it, email us instead.</p>
+</section>
+
+</main>
+
 <footer>
-  <a class="contact" href="mailto:oakesdevstudio@gmail.com">oakesdevstudio@gmail.com</a>
   <p class="fine">Oakes Development Studio LLC — Santa Cruz, California</p>
 </footer>
 
